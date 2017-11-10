@@ -1,0 +1,36 @@
+{
+    "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb-base"],
+    "parserOptions": {
+        "ecmaVersion": 6
+    },
+    "env": {
+        "node": true,
+        "browser": true,
+        "es6": true,
+        "jest": true
+    },
+    "parser": "babel-eslint",
+    "rules": {
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "no-unused-vars": [
+            "error",
+            {
+                "vars": "local",
+                "args": "none"
+            }
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "quotes": 0,
+        "arrow-body-style": [1, "as-needed"],
+        "react/jsx-filename-extension": 0,
+        "react/prop-types": 0,
+        "react/jsx-indent": 0,
+        "react/jsx-indent-props": 0
+    }
+}
