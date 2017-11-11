@@ -45,9 +45,9 @@ export const createIntake = (intakeData) => {
         Perishable: intakeData.perishable,
         Camper: intakeData.camper,
         Diaper: intakeData.diaper,
-        Notes: intakeData.notes ? intakeData.notes : null,
-        Weight: intakeData.weight ? intakeData.weight : 0,
-        Active: intakeData.active ? intakeData.active : true
+        Notes: intakeData.notes,
+        Weight: intakeData.weight,
+        Active: intakeData.active
     }
 
     return axios({
@@ -56,7 +56,6 @@ export const createIntake = (intakeData) => {
         data: requestData
     })
     .then((response) => {
-        console.log(response);
         let data = response.data.data;
         // serialize the data
         const intakeResponseData = {
@@ -67,14 +66,13 @@ export const createIntake = (intakeData) => {
             perishable: data.Perishable,
             camper: data.Camper,
             diaper: data.Diaper,
-            signature: data.Signature ? data.Signature : null,
+            signature: data.Signature,
             notes: data.Notes,
-            weight: data.Weight ? data.Weight : null,
+            weight: data.Weight,
             active: data.Active,
-            created: data.Created ? data.Created : null,
-            changed: data.Changed ? data.Changed : null,
+            created: data.Created,
+            changed: data.Changed,
         };
-        console.log(intakeResponseData);
         return intakeResponseData;
     }).catch((error) => {
         console.log('error posting member data.', error);

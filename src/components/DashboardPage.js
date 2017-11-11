@@ -81,7 +81,7 @@ export class DashboardPage extends React.Component {
   }
 
   /**
-   * Called by child edit component when requesting to create or update a member.
+   * Called by child edit component when requesting to create or update an intake.
    */
   saveIntakeData = (intakeData) => {
     // if (this.state.editMode === 'edit') {
@@ -92,8 +92,7 @@ export class DashboardPage extends React.Component {
     // } else {
       // create a new member
       createIntake(intakeData).then((data) => {
-        console.log('success', data);
-        this.setState({ householdIntakes: [...this.householdIntakes, data] });
+        this.setState({ householdIntakes: [...this.state.householdIntakes, data] });
       });
     // }
 
