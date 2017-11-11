@@ -51,7 +51,6 @@ export const createMember = (memberData) => {
         data: requestData
     })
     .then((response) => {
-        console.log('response in provider', response);
         let data = response.data.data;
         memberData = {
             id: data.Id,
@@ -77,6 +76,7 @@ export const updateMember = (memberData) => {
         url:`http://localhost:8081/v1/members`,
         data: 
         {
+            Id: memberData.id,
             FirstName: memberData.firstName,
             LastName: memberData.lastName,
             DOB: memberData.DOB,

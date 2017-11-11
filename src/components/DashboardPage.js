@@ -77,7 +77,7 @@ export class DashboardPage extends React.Component {
    * Called by child edit component when requesting to create or update a member.
    */
   saveMemberData = (memberData) => {
-    if (this.state.editMode === 'edit') {
+    if (this.state.selectedMember && this.state.selectedMember.id) {
       // this is an update
       updateMember(memberData).then((data) => {
         this.setState({ selectedMember: { ...this.state.selectedMember, ...memberData } });
