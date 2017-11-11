@@ -1,5 +1,15 @@
 import React from 'react';
-import { Button, FormGroup, Form, ControlLabel, FormControl, ButtonToolbar, Modal } from 'react-bootstrap';
+import { 
+  Button,
+  FormGroup,
+  Form,
+  ControlLabel,
+  FormControl,
+  ButtonToolbar,
+  Table,
+  Modal } from 'react-bootstrap';
+import { getHouseholdMembers } from '../providers/households';
+import { getHouseholdIntakes } from '../providers/intakes';
 
 export class EditMember extends React.Component {
   constructor(props) {
@@ -26,10 +36,21 @@ export class EditMember extends React.Component {
       memberNumber: '',
       memberLastName: '',
       memberDOB: '',
-      matchedData: [],
+      householdData: undefined,
+      householdMembers: [],
       memberData
     };
   }
+
+  componentDidMount() {
+    console.log('componentDidMount');
+    if (this.state.memberData.id) {
+      getHouseholdMembers(this.state.memberData.householdId).then((data) => {
+        this.setState({ householdMembers: data.members, householdData: data });
+      })
+    }
+  }
+
 
   handleMemberFirstNameChange = (e) => {
     const val = e.target.value;
@@ -97,14 +118,30 @@ export class EditMember extends React.Component {
       <h4>HouseHold</h4>
       <Button >Add Household Member</Button>
       {
-        this.state.matchedData.length === 0 ? (<p>No other members</p>) : (
-          this.state.matchedData.map((data) => (
-            <div key={data.id}>
-              <p>Id: {data.id}</p>
-              <p>Name: {data.lastName}, {data.FirstName}</p>
-              <hr/>
-            </div>
-          ))
+        this.state.householdMembers && this.state.householdMembers.length === 0 ? (<p>No other members</p>) : (
+          
+            <Table striped bordered condensed hover>
+            <thead>
+              <tr>
+                <th>Member#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>DOB</th>
+              </tr>
+            </thead>
+            <tbody>
+            {
+              this.state.householdMembers && this.state.householdMembers.map((data) => (
+                <tr key={data.id}>
+                <td>{data.id}</td>
+                <td>{data.firstName}</td>
+                <td>{data.lastName}</td>
+                <td>{data.DOB}</td>
+              </tr>
+              ))
+            }
+            </tbody>
+          </Table>
         )
       }
     </Modal.Body>

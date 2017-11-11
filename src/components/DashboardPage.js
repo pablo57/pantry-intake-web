@@ -116,7 +116,7 @@ export class DashboardPage extends React.Component {
               <tbody>
               {
                 this.state.householdIntakes && this.state.householdIntakes.map((data) => (
-                      <tr key={data.id} onClick={ () => { this.selectMember(data) } }>
+                      <tr key={data.id}>
                       <td>{data.foodBox}</td>
                       <td>{data.perishable}</td>
                       <td>{data.camper}</td>
