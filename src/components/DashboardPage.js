@@ -12,6 +12,7 @@ import {
 import SearchMember from './SearchMember';
 import EditMember from './EditMember';
 import { createMember, updateMember } from '../providers/members';
+import { getHouseholdIntakes } from '../providers/intakes';
 
 
 export class DashboardPage extends React.Component {
@@ -19,8 +20,9 @@ export class DashboardPage extends React.Component {
     super(props);
 
     this.state = {
-      selectedMember: null,
-      editMode: null
+      selectedMember: undefined,
+      householdIntakes: undefined,
+      editMode: undefined
     };
   }
 
@@ -30,6 +32,11 @@ export class DashboardPage extends React.Component {
    */
   memberSelected = (member) => {
     this.setState({ searchModalshow: false, selectedMember: member });
+
+    getHouseholdIntakes(member.householdId).then((intakes) => {
+      console.log(intakes);
+      this.setState({ householdIntakes: intakes });
+    });
   }
 
   showSearchModal = () => {
@@ -93,28 +100,30 @@ export class DashboardPage extends React.Component {
         }
 
         {
-          [].length === 0 ? (<p>No History</p>) : (
+          this.state.householdIntakes && this.state.householdIntakes.length === 0 ? (<p>No History</p>) : (
               <Table striped bordered condensed hover>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th>FoodBox</th>
                   <th>Perishables</th>
                   <th>Camper</th>
                   <th>Diapers</th>
-                  <th>Member</th>
-                  <th>Size of Household</th>
+                  <th>Notes</th>
+                  <th>Household Count</th>
+                  <th>Weight</th>
                 </tr>
               </thead>
               <tbody>
               {
-                  [].map((data) => (
+                this.state.householdIntakes && this.state.householdIntakes.map((data) => (
                       <tr key={data.id} onClick={ () => { this.selectMember(data) } }>
-                      <td>{data.id}</td>
-                      <td>{data.firstName}</td>
-                      <td>{data.lastName}</td>
-                      <td>{data.DOB}</td>
-                      <td>{data.lastName}</td>
-                      <td>{data.DOB}</td>
+                      <td>{data.foodBox}</td>
+                      <td>{data.perishable}</td>
+                      <td>{data.camper}</td>
+                      <td>{data.diaper}</td>
+                      <td>{data.notes}</td>
+                      <td>{data.householdCount}</td>
+                      <td>{data.weight}</td>
                     </tr>
                     ))
               }
