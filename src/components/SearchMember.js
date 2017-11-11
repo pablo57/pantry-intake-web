@@ -127,14 +127,6 @@ export class DashboardPage extends React.Component {
         onChange={this.handleMemberLastNameChange}
         disabled={this.state.memberNumber.length > 0}
       />
-      <ControlLabel>DOB</ControlLabel>
-      <FormControl
-        type="text"
-        value={this.state.memberDOBChange}
-        placeholder="Enter Member DOB (e.g. 10-14-1967)"
-        onChange={this.handleMemberDOBChange}
-        disabled={this.state.memberNumber.length > 0}
-      />
 
     </FormGroup>
   </form>

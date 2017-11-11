@@ -35,15 +35,20 @@ export const searchMembers = (val, byField) => {
 };
 
 export const createMember = (memberData) => {
+    let requestData = {
+        FirstName: memberData.firstName,
+        LastName: memberData.lastName,
+        DOB: memberData.DOB,
+    }
+
+    if (memberData.householdId) {
+        requestData.HouseholdId = memberData.householdId;
+    }
+
     return axios({
         method:'post',
         url:`http://localhost:8081/v1/members`,
-        data: 
-        {
-            FirstName: memberData.firstName,
-            LastName: memberData.lastName,
-            DOB: memberData.DOB,
-        }
+        data: requestData
     })
     .then((response) => {
         console.log('response in provider', response);

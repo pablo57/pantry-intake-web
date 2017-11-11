@@ -8,12 +8,10 @@ import {
   ButtonToolbar,
   Table,
   Modal } from 'react-bootstrap';
-import { createMember } from '../providers/members';
 import { getHouseholdMembers } from '../providers/households';
 import { getHouseholdIntakes } from '../providers/intakes';
-import AddHouseholdMember, { AddHouseHoldMember } from './AddHouseholdMember';
 
-export class EditMember extends React.Component {
+export class AddHouseHoldMember extends React.Component {
   constructor(props) {
     super(props);
 
@@ -76,7 +74,7 @@ export class EditMember extends React.Component {
   }
 
   showAddMemberModal = () => {
-    this.setState({ addMemberModalshow: true });
+    this.setState({ mode, addMemberModalshow: true });
   }
   hideAddMemberModal = () => {
     this.setState({ addMemberModalshow: false });
@@ -85,26 +83,6 @@ export class EditMember extends React.Component {
   save = () => {
     console.log('save');
     this.props.save(this.state.memberData);
-  }
-
-  /**
-   * Called by child edit component when requesting to create or update a member.
-   */
-  saveHouseholdMemberData = (memberData) => {
-    if (this.state.editMode === 'edit') {
-      // this is an update
-      updateMember(memberData).then((data) => {
-        // this.setState({ selectedMember: { ...this.state.selectedMember, ...memberData } });
-      });
-    } else {
-      // create a new household member
-      memberData.householdId = this.state.memberData.householdId;
-      createMember(memberData).then((data) => {
-        this.setState({ householdMembers: [...this.state.householdMembers, data] });
-      })
-    }
-
-    this.setState({ addMemberModalshow: false });
   }
 
   render = (props) => {
@@ -144,57 +122,16 @@ export class EditMember extends React.Component {
 
     </FormGroup>
   </form>
-      <h4>HouseHold</h4>
-      <Button onClick={this.showAddMemberModal}>Add Household Member</Button>
-      {
-        this.state.householdMembers && this.state.householdMembers.length === 0 ? (<p>No other members</p>) : (
-          
-            <Table striped bordered condensed hover>
-            <thead>
-              <tr>
-                <th>Member#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>DOB</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              this.state.householdMembers && this.state.householdMembers.map((data) => (
-                <tr key={data.id}>
-                <td>{data.id}</td>
-                <td>{data.firstName}</td>
-                <td>{data.lastName}</td>
-                <td>{data.DOB}</td>
-              </tr>
-              ))
-            }
-            </tbody>
-          </Table>
-        )
-      }
+
     </Modal.Body>
     <Modal.Footer>
       <Button onClick={this.props.hideModal}>Cancel</Button>
       <Button onClick={this.save}>Save</Button>
     </Modal.Footer>
 
-    <Modal
-      show={this.state.addMemberModalshow}
-      onHide={this.hideAddMemberModal}
-      dialogClassName="custom-modal"
-    >
-    <AddHouseHoldMember 
-      hideModal={ this.hideAddMemberModal }
-      mode={ 'add' }
-      memberData={ undefined }
-      save={ this.saveHouseholdMemberData }
-    />
-    </Modal>
-
       </div>
     );
   }
 }
 
-export default EditMember;
+export default AddHouseHoldMember;

@@ -99,7 +99,7 @@ export class DashboardPage extends React.Component {
                 </tbody>
               </Table>
             </div>
-          ) : (<p>No Member Selected. Please search for and select a member to start.</p>)
+          ) : (<h3>No Member Selected. Please search for and select a member to start.</h3>)
         }
         <hr/>
         {
@@ -116,26 +116,28 @@ export class DashboardPage extends React.Component {
                       <th>Notes</th>
                       <th>Household Count</th>
                       <th>Weight</th>
+                      <th>Date</th>
                     </tr>
                   </thead>
                   <tbody>
                   {
                     this.state.householdIntakes && this.state.householdIntakes.map((data) => (
                           <tr key={data.id}>
-                          <td>{data.foodBox}</td>
-                          <td>{data.perishable}</td>
-                          <td>{data.camper}</td>
-                          <td>{data.diaper}</td>
+                          <td><input type="checkbox" checked={data.foodBox} readOnly disabled /></td>
+                          <td><input type="checkbox" checked={data.perishable} readOnly disabled /></td>
+                          <td><input type="checkbox" checked={data.camper} readOnly disabled /></td>
+                          <td><input type="checkbox" checked={data.diaper} readOnly disabled /></td>
                           <td>{data.notes}</td>
                           <td>{data.householdCount}</td>
                           <td>{data.weight}</td>
+                          <td>{data.created}</td>
                         </tr>
                         ))
                   }
                   </tbody>
                 </Table>
               </div>
-          ) : (<p>No History</p>)
+          ) : (<h3>No Intake History</h3>)
         }
 
         <ButtonToolbar>
