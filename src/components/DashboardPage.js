@@ -78,58 +78,64 @@ export class DashboardPage extends React.Component {
 
         {
           this.state.selectedMember ? (
-            <Table striped bordered condensed hover>
-              <thead>
-                <tr>
-                  <th>Member#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>DOB</th>
+            <div>
+              <h3>Member Data</h3>
+              <Table striped bordered condensed hover>
+                <thead>
+                  <tr>
+                    <th>Member#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>DOB</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                  <td>{this.state.selectedMember.id}</td>
+                  <td>{this.state.selectedMember.firstName}</td>
+                  <td>{this.state.selectedMember.lastName}</td>
+                  <td>{this.state.selectedMember.DOB}</td>
                 </tr>
-              </thead>
-              <tbody>
-                <tr>
-                <td>{this.state.selectedMember.id}</td>
-                <td>{this.state.selectedMember.firstName}</td>
-                <td>{this.state.selectedMember.lastName}</td>
-                <td>{this.state.selectedMember.DOB}</td>
-              </tr>
-              </tbody>
-            </Table>
+                </tbody>
+              </Table>
+            </div>
           ) : (<p>No Member Selected. Please search for and select a member to start.</p>)
         }
-
+        <hr/>
         {
-          this.state.householdIntakes && this.state.householdIntakes.length === 0 ? (<p>No History</p>) : (
-              <Table striped bordered condensed hover>
-              <thead>
-                <tr>
-                  <th>FoodBox</th>
-                  <th>Perishables</th>
-                  <th>Camper</th>
-                  <th>Diapers</th>
-                  <th>Notes</th>
-                  <th>Household Count</th>
-                  <th>Weight</th>
-                </tr>
-              </thead>
-              <tbody>
-              {
-                this.state.householdIntakes && this.state.householdIntakes.map((data) => (
-                      <tr key={data.id}>
-                      <td>{data.foodBox}</td>
-                      <td>{data.perishable}</td>
-                      <td>{data.camper}</td>
-                      <td>{data.diaper}</td>
-                      <td>{data.notes}</td>
-                      <td>{data.householdCount}</td>
-                      <td>{data.weight}</td>
+          this.state.householdIntakes && this.state.householdIntakes.length > 0 ?  (
+              <div>
+                <h3>Intake History</h3>
+                <Table striped bordered condensed hover>
+                <thead>
+                    <tr>
+                      <th>FoodBox</th>
+                      <th>Perishables</th>
+                      <th>Camper</th>
+                      <th>Diapers</th>
+                      <th>Notes</th>
+                      <th>Household Count</th>
+                      <th>Weight</th>
                     </tr>
-                    ))
-              }
-              </tbody>
-            </Table>
-          )
+                  </thead>
+                  <tbody>
+                  {
+                    this.state.householdIntakes && this.state.householdIntakes.map((data) => (
+                          <tr key={data.id}>
+                          <td>{data.foodBox}</td>
+                          <td>{data.perishable}</td>
+                          <td>{data.camper}</td>
+                          <td>{data.diaper}</td>
+                          <td>{data.notes}</td>
+                          <td>{data.householdCount}</td>
+                          <td>{data.weight}</td>
+                        </tr>
+                        ))
+                  }
+                  </tbody>
+                </Table>
+              </div>
+          ) : (<p>No History</p>)
         }
 
         <ButtonToolbar>
