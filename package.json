@@ -12,6 +12,7 @@
     "heroku-postbuild": "yarn run build:prod"
   },
   "dependencies": {
+    "axios": "^0.17.0",
     "babel-cli": "6.24.1",
     "babel-core": "6.25.0",
     "babel-loader": "7.1.1",
@@ -28,6 +29,7 @@
     "numeral": "2.0.6",
     "react": "16.0.0",
     "react-addons-shallow-compare": "15.6.0",
+    "react-bootstrap": "^0.31.5",
     "react-dates": "12.3.0",
     "react-dom": "16.0.0",
     "react-modal": "2.2.2",
