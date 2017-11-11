@@ -11,8 +11,9 @@ import {
   Modal } from 'react-bootstrap';
 import SearchMember from './SearchMember';
 import EditMember from './EditMember';
+import EditIntake from './EditIntake';
 import { createMember, updateMember } from '../providers/members';
-import { getHouseholdIntakes } from '../providers/intakes';
+import { getHouseholdIntakes, createIntake } from '../providers/intakes';
 
 
 export class DashboardPage extends React.Component {
@@ -21,7 +22,7 @@ export class DashboardPage extends React.Component {
 
     this.state = {
       selectedMember: undefined,
-      householdIntakes: undefined,
+      householdIntakes: [],
       editMode: undefined
     };
   }
@@ -53,6 +54,13 @@ export class DashboardPage extends React.Component {
     this.setState({ editModalshow: false });
   }
 
+  showEditIntakeModal = (mode) => {
+    this.setState({ mode, editIntakeModalshow: true });
+  }
+  hideEditIntakeModal = () => {
+    this.setState({ editIntakeModalshow: false });
+  }
+
   /**
    * Called by child edit component when requesting to create or update a member.
    */
@@ -70,6 +78,26 @@ export class DashboardPage extends React.Component {
     }
 
     this.setState({ editModalshow: false });
+  }
+
+  /**
+   * Called by child edit component when requesting to create or update a member.
+   */
+  saveIntakeData = (intakeData) => {
+    // if (this.state.editMode === 'edit') {
+    //   // this is an update
+    //   updateMember(memberData).then((data) => {
+    //     this.setState({ selectedMember: { ...this.state.selectedMember, ...memberData } });
+    //   });
+    // } else {
+      // create a new member
+      createIntake(intakeData).then((data) => {
+        console.log('success', data);
+        this.setState({ householdIntakes: [...this.householdIntakes, data] });
+      });
+    // }
+
+    this.setState({ editIntakeModalshow: false });
   }
 
   render = (props) => {
@@ -145,9 +173,14 @@ export class DashboardPage extends React.Component {
           Search
         </Button>
           {this.state.selectedMember ? (
-            <Button bsStyle="primary" onClick={() => this.showEditModal('edit')}>
+            <div>
+              <Button bsStyle="primary" onClick={() => this.showEditModal('edit')}>
               Edit Member
-            </Button>
+              </Button>
+              <Button bsStyle="primary" onClick={() => this.showEditIntakeModal('edit')}>
+                Create Intake
+              </Button>
+            </div>
           ) : (
             <Button bsStyle="primary" onClick={() => this.showEditModal('add')}>
               Create Member
@@ -173,6 +206,19 @@ export class DashboardPage extends React.Component {
           mode={ this.state.mode }
           memberData={ this.state.selectedMember }
           save={ this.saveMemberData }
+        />
+      </Modal>
+
+      <Modal
+        show={this.state.editIntakeModalshow}
+        onHide={this.hideEditIntakeModal}
+        dialogClassName="custom-modal"
+      >
+        <EditIntake 
+          hideModal={ this.hideEditIntakeModal }
+          mode={ this.state.mode }
+          memberData={ this.state.selectedMember }
+          save={ this.saveIntakeData }
         />
       </Modal>
       </ButtonToolbar>

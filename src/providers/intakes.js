@@ -28,10 +28,54 @@ export const getHouseholdIntakes = (id) => {
                 householdCount: data.HouseholdCount,
                 active: data.Active,
                 created: data.Created,
-                changd: data.Changed,
+                changed: data.Changed,
             }
         });
         return intakes;
+    }).catch((error) => {
+        console.log('error posting member data.', error);
+    });
+};
+
+export const createIntake = (intakeData) => {
+    let requestData = {
+        HouseholdId: intakeData.householdId,
+        MemberId: intakeData.memberId,
+        FoodBox: intakeData.foodBox,
+        Perishable: intakeData.perishable,
+        Camper: intakeData.camper,
+        Diaper: intakeData.diaper,
+        Notes: intakeData.notes ? intakeData.notes : null,
+        Weight: intakeData.weight ? intakeData.weight : 0,
+        Active: intakeData.active ? intakeData.active : true
+    }
+
+    return axios({
+        method:'post',
+        url:`http://localhost:8081/v1/intakes`,
+        data: requestData
+    })
+    .then((response) => {
+        console.log(response);
+        let data = response.data.data;
+        // serialize the data
+        const intakeResponseData = {
+            id: data.Id,
+            householdId: data.HouseholdId,
+            memberId: data.MemberId,
+            foodBox: data.FoodBox,
+            perishable: data.Perishable,
+            camper: data.Camper,
+            diaper: data.Diaper,
+            signature: data.Signature ? data.Signature : null,
+            notes: data.Notes,
+            weight: data.Weight ? data.Weight : null,
+            active: data.Active,
+            created: data.Created ? data.Created : null,
+            changed: data.Changed ? data.Changed : null,
+        };
+        console.log(intakeResponseData);
+        return intakeResponseData;
     }).catch((error) => {
         console.log('error posting member data.', error);
     });

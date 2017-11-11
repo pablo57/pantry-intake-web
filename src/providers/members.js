@@ -25,7 +25,7 @@ export const searchMembers = (val, byField) => {
                 isHeadOfHousehold: data.IsHeadOfHousehold,
                 active: data.Active,
                 created: data.Created,
-                changd: data.Changed
+                changed: data.Changed
             }
         });
         return members;
@@ -63,7 +63,7 @@ export const createMember = (memberData) => {
             isHeadOfHousehold: data.IsHeadOfHousehold,
             active: data.Active,
             created: data.Created,
-            changd: data.Changed
+            changed: data.Changed
         }
         return memberData;
     }).catch((error) => {
@@ -95,7 +95,7 @@ export const updateMember = (memberData) => {
             isHeadOfHousehold: data.IsHeadOfHousehold,
             active: data.Active,
             created: data.Created,
-            changd: data.Changed
+            changed: data.Changed
         }
         return memberData;
     }).catch((error) => {

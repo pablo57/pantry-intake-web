@@ -12,7 +12,7 @@ export const getHouseholdMembers = (id) => {
     })
     .then((response) => {
         let data = response.data.data;
-        
+
         // need to serialize the data
         let householdData =  {
             id: data.Id,
@@ -32,7 +32,7 @@ export const getHouseholdMembers = (id) => {
                     isHeadOfHousehold: member.IsHeadOfHousehold,
                     active: member.Active,
                     created: member.Created,
-                    changd: member.Changed
+                    changed: member.Changed
                 }
             })
         }
