@@ -62,6 +62,18 @@ export class DashboardPage extends React.Component {
   }
 
   /**
+   * Called when user clicks on clear button. Used to clear the state and remove
+   * the currently selected member.
+   */
+  handleClear = () => {
+    this.setState({
+      selectedMember: undefined,
+      householdIntakes: [],
+      editMode: undefined
+    });
+  }
+
+  /**
    * Called by child edit component when requesting to create or update a member.
    */
   saveMemberData = (memberData) => {
@@ -178,6 +190,9 @@ export class DashboardPage extends React.Component {
               </Button>
               <Button bsStyle="primary" onClick={() => this.showEditIntakeModal('edit')}>
                 Create Intake
+              </Button>
+              <Button bsStyle="primary" onClick={ this.handleClear }>
+                Clear
               </Button>
             </div>
           ) : (
