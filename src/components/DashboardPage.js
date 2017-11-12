@@ -153,6 +153,35 @@ export class DashboardPage extends React.Component {
           ) : (<h3>No Member Selected. Please search for and select a member to start.</h3>)
         }
         <hr/>
+        <h3>HouseHold</h3>
+        {
+          this.state.householdMembers && this.state.householdMembers.length === 0 ? (<p>No other members</p>) : (
+            
+              <Table striped bordered condensed hover>
+              <thead>
+                <tr>
+                  <th>Member#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>DOB</th>
+                </tr>
+              </thead>
+              <tbody>
+              {
+                this.state.householdMembers && this.state.householdMembers.map((data) => (
+                  <tr key={data.id}>
+                  <td>{data.id}</td>
+                  <td>{data.firstName}</td>
+                  <td>{data.lastName}</td>
+                  <td>{data.DOB.format('MM/DD/YYYY')}</td>
+                </tr>
+                ))
+              }
+              </tbody>
+            </Table>
+          )
+        }
+        <hr/>
         {
           this.state.householdIntakes && this.state.householdIntakes.length > 0 ?  (
               <div>
@@ -198,7 +227,7 @@ export class DashboardPage extends React.Component {
           {this.state.selectedMember ? (
             <div>
               <Button bsStyle="primary" onClick={() => this.showEditModal('edit')}>
-              Edit Member
+              Edit
               </Button>
               <Button bsStyle="primary" onClick={() => this.showEditIntakeModal('edit')}>
                 Create Intake

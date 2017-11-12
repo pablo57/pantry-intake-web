@@ -10,8 +10,6 @@ import {
   Modal } from 'react-bootstrap';
 import moment from 'moment';
 import Datetime from 'react-datetime';
-import { getHouseholdMembers } from '../providers/households';
-import { getHouseholdIntakes } from '../providers/intakes';
 
 export class AddHouseHoldMember extends React.Component {
   constructor(props) {
@@ -35,21 +33,9 @@ export class AddHouseHoldMember extends React.Component {
     }
 
     this.state = {
-      householdData: undefined,
-      householdMembers: [],
       memberData
     };
   }
-
-  componentDidMount() {
-    console.log('componentDidMount');
-    if (this.state.memberData.id) {
-      getHouseholdMembers(this.state.memberData.householdId).then((data) => {
-        this.setState({ householdMembers: data.members, householdData: data });
-      })
-    }
-  }
-
 
   handleMemberFirstNameChange = (e) => {
     const val = e.target.value;
@@ -71,15 +57,7 @@ export class AddHouseHoldMember extends React.Component {
     this.setState({ memberData });
   }
 
-  showAddMemberModal = () => {
-    this.setState({ mode, addMemberModalshow: true });
-  }
-  hideAddMemberModal = () => {
-    this.setState({ addMemberModalshow: false });
-  }
-
   save = () => {
-    console.log('save');
     this.props.save(this.state.memberData);
   }
 
