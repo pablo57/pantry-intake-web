@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 /**
  * Perform a GET call on households endpoint to get all members for that household.
@@ -19,20 +20,20 @@ export const getHouseholdMembers = (id) => {
             name: data.Name,
             applicationDate: data.ApplicaitonDate,
             renewalDate: data.RenewalDate,
-            created: data.Created,
-            changd: data.Changed,
+            created: data.Created ? moment(data.Created) : null,
+            changed: data.Changed ? moment (data.Changed) : null,
             members: data.members.map((member) => {
                 return {
                     id: member.Id,
                     householdId: member.HouseholdId,
                     lastName: member.LastName,
                     firstName: member.FirstName,
-                    DOB: member.DOB,
+                    DOB: member.DOB ? moment(member.DOB) : null,
                     isAdult: member.IsAdult,
                     isHeadOfHousehold: member.IsHeadOfHousehold,
                     active: member.Active,
-                    created: member.Created,
-                    changed: member.Changed
+                    created: data.Created ? moment(data.Created) : null,
+                    changed: data.Changed ? moment (data.Changed) : null
                 }
             })
         }

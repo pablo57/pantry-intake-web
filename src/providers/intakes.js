@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 /**
  * Perform a GET call on intakes endpoint
@@ -27,8 +28,8 @@ export const getHouseholdIntakes = (id) => {
                 weight: data.Weight,
                 householdCount: data.HouseholdCount,
                 active: data.Active,
-                created: data.Created,
-                changed: data.Changed,
+                created: data.Created ? moment(data.Created) : null,
+                changed: data.Changed ? moment (data.Changed) : null
             }
         });
         return intakes;
@@ -70,8 +71,8 @@ export const createIntake = (intakeData) => {
             notes: data.Notes,
             weight: data.Weight,
             active: data.Active,
-            created: data.Created,
-            changed: data.Changed,
+            created: data.Created ? moment(data.Created) : null,
+            changed: data.Changed ? moment (data.Changed) : null
         };
         return intakeResponseData;
     }).catch((error) => {

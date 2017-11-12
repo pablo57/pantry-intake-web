@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 /**
  * Perform a GET call on search-members endpoint
@@ -20,12 +21,12 @@ export const searchMembers = (val, byField) => {
                 householdId: data.HouseholdId,
                 lastName: data.LastName,
                 firstName: data.FirstName,
-                DOB: data.DOB,
+                DOB: moment(data.DOB),
                 isAdult: data.IsAdult,
                 isHeadOfHousehold: data.IsHeadOfHousehold,
                 active: data.Active,
-                created: data.Created,
-                changed: data.Changed
+                created: data.Created ? moment(data.Created) : null,
+                changed: data.Changed ? moment (data.Changed) : null
             }
         });
         return members;
@@ -38,7 +39,7 @@ export const createMember = (memberData) => {
     let requestData = {
         FirstName: memberData.firstName,
         LastName: memberData.lastName,
-        DOB: memberData.DOB,
+        DOB: memberData.DOB.format('YYYY-MM-DD'),
     }
 
     if (memberData.householdId) {
@@ -57,12 +58,12 @@ export const createMember = (memberData) => {
             householdId: data.HouseholdId,
             lastName: data.LastName,
             firstName: data.FirstName,
-            DOB: data.DOB,
+            DOB: data.DOB ? moment(data.DOB) : null,
             isAdult: data.IsAdult,
             isHeadOfHousehold: data.IsHeadOfHousehold,
             active: data.Active,
-            created: data.Created,
-            changed: data.Changed
+            created: data.Created ? moment(data.Created) : null,
+            changed: data.Changed ? moment(data.Changed) : null
         }
         return memberData;
     }).catch((error) => {
@@ -79,7 +80,7 @@ export const updateMember = (memberData) => {
             Id: memberData.id,
             FirstName: memberData.firstName,
             LastName: memberData.lastName,
-            DOB: memberData.DOB,
+            DOB: memberData.DOB.format('YYYY-MM-DD'),
         }
     })
     .then((response) => {
@@ -90,12 +91,12 @@ export const updateMember = (memberData) => {
             householdId: data.HouseholdId,
             lastName: data.LastName,
             firstName: data.FirstName,
-            DOB: data.DOB,
+            DOB: data.DOB ? moment(data.DOB) : null,
             isAdult: data.IsAdult,
             isHeadOfHousehold: data.IsHeadOfHousehold,
             active: data.Active,
-            created: data.Created,
-            changed: data.Changed
+            created: data.Created ? moment(data.Created) : null,
+            changed: data.Changed ? moment(data.Changed) : null
         }
         return memberData;
     }).catch((error) => {

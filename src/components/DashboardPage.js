@@ -35,7 +35,6 @@ export class DashboardPage extends React.Component {
     this.setState({ searchModalshow: false, selectedMember: member });
 
     getHouseholdIntakes(member.householdId).then((intakes) => {
-      console.log(intakes);
       this.setState({ householdIntakes: intakes });
     });
   }
@@ -114,7 +113,6 @@ export class DashboardPage extends React.Component {
   render = (props) => {
     return (
       <div>
-
         {
           this.state.selectedMember ? (
             <div>
@@ -133,7 +131,7 @@ export class DashboardPage extends React.Component {
                   <td>{this.state.selectedMember.id}</td>
                   <td>{this.state.selectedMember.firstName}</td>
                   <td>{this.state.selectedMember.lastName}</td>
-                  <td>{this.state.selectedMember.DOB}</td>
+                  <td>{this.state.selectedMember.DOB.format('MM/DD/YYYY')}</td>
                 </tr>
                 </tbody>
               </Table>
@@ -169,7 +167,7 @@ export class DashboardPage extends React.Component {
                           <td>{data.notes}</td>
                           <td>{data.householdCount}</td>
                           <td>{data.weight}</td>
-                          <td>{data.created}</td>
+                          <td>{data.created.format('MM/DD/YYYY')}</td>
                         </tr>
                         ))
                   }

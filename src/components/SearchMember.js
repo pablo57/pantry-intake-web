@@ -153,7 +153,7 @@ export class DashboardPage extends React.Component {
                         <td>{data.id}</td>
                         <td>{data.firstName}</td>
                         <td>{data.lastName}</td>
-                        <td>{data.DOB}</td>
+                        <td>{data.DOB.format('MM/DD/YYYY')}</td>
                   </tr>
                   ))
             }

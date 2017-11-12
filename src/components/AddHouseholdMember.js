@@ -8,6 +8,8 @@ import {
   ButtonToolbar,
   Table,
   Modal } from 'react-bootstrap';
+import moment from 'moment';
+import Datetime from 'react-datetime';
 import { getHouseholdMembers } from '../providers/households';
 import { getHouseholdIntakes } from '../providers/intakes';
 
@@ -25,7 +27,7 @@ export class AddHouseHoldMember extends React.Component {
         householdId: undefined,
         lastName: undefined,
         firstName: undefined,
-        DOB: undefined,
+        DOB: moment(),
         isAdult: false,
         isHeadOfHousehold: false,
         active: false
@@ -33,9 +35,6 @@ export class AddHouseHoldMember extends React.Component {
     }
 
     this.state = {
-      memberNumber: '',
-      memberLastName: '',
-      memberDOB: '',
       householdData: undefined,
       householdMembers: [],
       memberData
@@ -66,10 +65,9 @@ export class AddHouseHoldMember extends React.Component {
     this.setState({ memberData });
   }
 
-  handleMemberDOBChange = (e) => {
-    const val = e.target.value;
+  handleMemberDOBChange = (date) => {
     let memberData = this.state.memberData;
-    memberData.DOB = val;
+    memberData.DOB = date;
     this.setState({ memberData });
   }
 
@@ -113,12 +111,11 @@ export class AddHouseHoldMember extends React.Component {
         onChange={this.handleMemberLastNameChange}
       />
       <ControlLabel>DOB</ControlLabel>
-      <FormControl
-      type="text"
-      value={this.state.memberData.DOB}
-      placeholder="Enter Member DOB"
-      onChange={this.handleMemberDOBChange}
-    />
+        <Datetime
+            value={this.state.memberData.DOB}
+            timeFormat={false}
+            onChange={this.handleMemberDOBChange}
+        />
 
     </FormGroup>
   </form>

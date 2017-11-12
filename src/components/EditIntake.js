@@ -40,9 +40,6 @@ export class EditIntake extends React.Component {
     }
 
     this.state = {
-      memberNumber: '',
-      memberLastName: '',
-      memberDOB: '',
       householdData: undefined,
       householdMembers: [],
       intakeData

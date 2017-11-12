@@ -8,6 +8,8 @@ import {
   ButtonToolbar,
   Table,
   Modal } from 'react-bootstrap';
+import moment from 'moment';
+import Datetime from 'react-datetime';
 import { createMember } from '../providers/members';
 import { getHouseholdMembers } from '../providers/households';
 import { getHouseholdIntakes } from '../providers/intakes';
@@ -27,7 +29,7 @@ export class EditMember extends React.Component {
         householdId: undefined,
         lastName: undefined,
         firstName: undefined,
-        DOB: undefined,
+        DOB: moment(),
         isAdult: false,
         isHeadOfHousehold: false,
         active: false
@@ -35,9 +37,9 @@ export class EditMember extends React.Component {
     }
 
     this.state = {
-      memberNumber: '',
-      memberLastName: '',
-      memberDOB: '',
+      // memberNumber: '',
+      // memberLastName: '',
+      // memberDOB: moment(),
       householdData: undefined,
       householdMembers: [],
       memberData
@@ -82,8 +84,20 @@ export class EditMember extends React.Component {
     this.setState({ addMemberModalshow: false });
   }
 
+  onDateChange = (date) => {
+    if (date) {
+      let memberData = this.state.memberData;
+      memberData.DOB = date;
+      this.setState(() => ({ memberData }));
+    }
+  };
+
+  onFocusedChange = ({ focused }) => {
+      this.setState(() => ({ calendarFocused: focused }));
+  };
+
   save = () => {
-    console.log('save');
+    console.log('save data: ', this.state.memberData);
     this.props.save(this.state.memberData);
   }
 
@@ -135,13 +149,11 @@ export class EditMember extends React.Component {
         onChange={this.handleMemberLastNameChange}
       />
       <ControlLabel>DOB</ControlLabel>
-      <FormControl
-      type="text"
-      value={this.state.memberData.DOB}
-      placeholder="Enter Member DOB"
-      onChange={this.handleMemberDOBChange}
-    />
-
+      <Datetime
+        value={this.state.memberData.DOB}
+        timeFormat={false}
+        onChange={this.onDateChange}
+      />
     </FormGroup>
   </form>
       <h4>HouseHold</h4>
@@ -165,7 +177,7 @@ export class EditMember extends React.Component {
                 <td>{data.id}</td>
                 <td>{data.firstName}</td>
                 <td>{data.lastName}</td>
-                <td>{data.DOB}</td>
+                <td>{data.DOB.format('MM/DD/YYYY')}</td>
               </tr>
               ))
             }
