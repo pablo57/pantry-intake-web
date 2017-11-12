@@ -11,7 +11,6 @@ import {
 import moment from 'moment';
 import Datetime from 'react-datetime';
 import { createMember } from '../providers/members';
-import AddHouseholdMember, { AddHouseHoldMember } from './AddHouseholdMember';
 
 export class EditMember extends React.Component {
   constructor(props) {
@@ -60,13 +59,6 @@ export class EditMember extends React.Component {
     this.setState({ memberData });
   }
 
-  showAddMemberModal = () => {
-    this.setState({ addMemberModalshow: true });
-  }
-  hideAddMemberModal = () => {
-    this.setState({ addMemberModalshow: false });
-  }
-
   onDateChange = (date) => {
     if (date) {
       let memberData = this.state.memberData;
@@ -82,14 +74,6 @@ export class EditMember extends React.Component {
   save = () => {
     console.log('save data: ', this.state.memberData);
     this.props.save(this.state.memberData);
-  }
-
-  /**
-   * Called by child edit component when requesting to creat a new member for the household.
-   */
-  saveHouseholdMemberData = (memberData) => {
-    this.props.saveHouseholdMember(memberData);
-    this.setState({ addMemberModalshow: false });
   }
 
   render = (props) => {
@@ -127,53 +111,11 @@ export class EditMember extends React.Component {
       />
     </FormGroup>
   </form>
-      <h4>HouseHold</h4>
-      <Button onClick={this.showAddMemberModal}>Add Household Member</Button>
-      {
-        this.props.householdMembers && this.props.householdMembers.length === 0 ? (<p>No other members</p>) : (
-          
-            <Table striped bordered condensed hover>
-            <thead>
-              <tr>
-                <th>Member#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>DOB</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              this.props.householdMembers && this.props.householdMembers.map((data) => (
-                <tr key={data.id}>
-                <td>{data.id}</td>
-                <td>{data.firstName}</td>
-                <td>{data.lastName}</td>
-                <td>{data.DOB.format('MM/DD/YYYY')}</td>
-              </tr>
-              ))
-            }
-            </tbody>
-          </Table>
-        )
-      }
     </Modal.Body>
     <Modal.Footer>
       <Button onClick={this.props.hideModal}>Cancel</Button>
       <Button onClick={this.save}>Save</Button>
     </Modal.Footer>
-
-    <Modal
-      show={this.state.addMemberModalshow}
-      onHide={this.hideAddMemberModal}
-      dialogClassName="custom-modal"
-    >
-    <AddHouseHoldMember 
-      hideModal={ this.hideAddMemberModal }
-      mode={ 'add' }
-      memberData={ undefined }
-      save={ this.saveHouseholdMemberData }
-    />
-    </Modal>
 
       </div>
     );

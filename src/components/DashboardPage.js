@@ -12,6 +12,7 @@ import {
 import SearchMember from './SearchMember';
 import EditMember from './EditMember';
 import EditIntake from './EditIntake';
+import AddHouseHoldMember from './AddHouseholdMember';
 import { createMember, updateMember } from '../providers/members';
 import { getHouseholdIntakes, createIntake } from '../providers/intakes';
 import { getHouseholdMembers } from '../providers/households';
@@ -65,6 +66,13 @@ export class DashboardPage extends React.Component {
   }
   hideEditIntakeModal = () => {
     this.setState({ editIntakeModalshow: false });
+  }
+
+  showAddMemberModal = () => {
+    this.setState({ addMemberModalshow: true });
+  }
+  hideAddMemberModal = () => {
+    this.setState({ addMemberModalshow: false });
   }
 
   /**
@@ -122,15 +130,38 @@ export class DashboardPage extends React.Component {
     createMember(memberData).then((data) => {
       this.setState({ householdMembers: [...this.state.householdMembers, data] });
     });
+
+    this.setState({ addMemberModalshow: false });
   };
 
   render = (props) => {
     return (
       <div>
+        <Button bsStyle="primary" onClick={this.showSearchModal}>
+          Search
+        </Button>
         {
           this.state.selectedMember ? (
             <div>
-              <h3>Member Data</h3>
+              <Button bsStyle="primary" onClick={ this.handleClear }>
+                Clear
+              </Button>
+            </div>
+        ) : (
+              <Button bsStyle="primary" onClick={() => this.showEditModal('add')}>
+                Create Member
+              </Button>
+            )
+        }
+        {
+          this.state.selectedMember ? (
+            <div>
+              <h3>Member Info</h3>
+              { this.state.selectedMember && (
+                <Button bsStyle="primary" onClick={() => this.showEditModal('edit')}>
+                  Edit
+                </Button>
+              )}
               <Table striped bordered condensed hover>
                 <thead>
                   <tr>
@@ -154,8 +185,9 @@ export class DashboardPage extends React.Component {
         }
         <hr/>
         <h3>HouseHold</h3>
+        { this.state.householdMembers.length > 0 && <Button bsStyle="primary" onClick={this.showAddMemberModal}>Add Household Member</Button> }
         {
-          this.state.householdMembers && this.state.householdMembers.length === 0 ? (<p>No other members</p>) : (
+          this.state.householdMembers.length === 0 ? (<p>No other members</p>) : (
             
               <Table striped bordered condensed hover>
               <thead>
@@ -221,26 +253,14 @@ export class DashboardPage extends React.Component {
         }
 
         <ButtonToolbar>
-        <Button bsStyle="primary" onClick={this.showSearchModal}>
-          Search
-        </Button>
-          {this.state.selectedMember ? (
+          {
+            this.state.selectedMember && (
             <div>
-              <Button bsStyle="primary" onClick={() => this.showEditModal('edit')}>
-              Edit
-              </Button>
               <Button bsStyle="primary" onClick={() => this.showEditIntakeModal('edit')}>
                 Create Intake
               </Button>
-              <Button bsStyle="primary" onClick={ this.handleClear }>
-                Clear
-              </Button>
             </div>
-          ) : (
-            <Button bsStyle="primary" onClick={() => this.showEditModal('add')}>
-              Create Member
-            </Button>
-          ) }
+          )}
         
 
         <Modal
@@ -260,10 +280,7 @@ export class DashboardPage extends React.Component {
           hideModal={ this.hideEditModal }
           mode={ this.state.mode }
           memberData={ this.state.selectedMember }
-          householdMembers={ this.state.householdMembers }
-          householdData={ this.state.householdData }
           save={ this.saveMemberData }
-          saveHouseholdMember={ this.saveHouseholdMember }
         />
       </Modal>
 
@@ -278,6 +295,19 @@ export class DashboardPage extends React.Component {
           save={ this.saveIntakeData }
         />
       </Modal>
+
+      <Modal
+      show={this.state.addMemberModalshow}
+      onHide={this.hideAddMemberModal}
+      dialogClassName="custom-modal"
+    >
+    <AddHouseHoldMember 
+      hideModal={ this.hideAddMemberModal }
+      mode={ 'add' }
+      memberData={ undefined }
+      save={ this.saveHouseholdMember }
+    />
+    </Modal>
       </ButtonToolbar>
 
       </div>
