@@ -1,6 +1,6 @@
 // These are the actions that can be used in a redux store dispatch.
 
-// ADD_MEMBERß
+// ADD_MEMBER
 export const addMember = member => ({
     type: 'ADD_MEMBER',
     member

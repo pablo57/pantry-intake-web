@@ -20,8 +20,8 @@ export const getHouseholdMembers = (id) => {
             name: data.Name,
             applicationDate: data.ApplicaitonDate,
             renewalDate: data.RenewalDate,
-            created: data.Created ? moment(data.Created) : null,
-            changed: data.Changed ? moment (data.Changed) : null,
+            created: data.Created ? moment(data.Created) : moment(0),
+            changed: data.Changed ? moment (data.Changed) : moment(0),
             members: data.members.map((member) => {
                 return {
                     id: member.Id,
@@ -32,8 +32,8 @@ export const getHouseholdMembers = (id) => {
                     isAdult: member.IsAdult,
                     isHeadOfHousehold: member.IsHeadOfHousehold,
                     active: member.Active,
-                    created: data.Created ? moment(data.Created) : null,
-                    changed: data.Changed ? moment (data.Changed) : null
+                    created: data.Created ? moment(data.Created) : moment(0),
+                    changed: data.Changed ? moment (data.Changed) : moment(0)
                 }
             })
         }

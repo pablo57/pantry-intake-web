@@ -14,6 +14,7 @@ import EditMember from './EditMember';
 import EditIntake from './EditIntake';
 import { createMember, updateMember } from '../providers/members';
 import { getHouseholdIntakes, createIntake } from '../providers/intakes';
+import { getHouseholdMembers } from '../providers/households';
 
 
 export class DashboardPage extends React.Component {
@@ -22,6 +23,8 @@ export class DashboardPage extends React.Component {
 
     this.state = {
       selectedMember: undefined,
+      householdData: undefined,
+      householdMembers: [],
       householdIntakes: [],
       editMode: undefined
     };
@@ -33,6 +36,10 @@ export class DashboardPage extends React.Component {
    */
   memberSelected = (member) => {
     this.setState({ searchModalshow: false, selectedMember: member });
+
+    getHouseholdMembers(member.householdId).then((data) => {
+      this.setState({ householdMembers: data.members, householdData: data });
+    })
 
     getHouseholdIntakes(member.householdId).then((intakes) => {
       this.setState({ householdIntakes: intakes });
@@ -67,6 +74,8 @@ export class DashboardPage extends React.Component {
   handleClear = () => {
     this.setState({
       selectedMember: undefined,
+      householdData: undefined,
+      householdMembers: [],
       householdIntakes: [],
       editMode: undefined
     });
@@ -92,23 +101,28 @@ export class DashboardPage extends React.Component {
   }
 
   /**
-   * Called by child edit component when requesting to create or update an intake.
+   * Called by child edit component when requesting to create an intake.
    */
   saveIntakeData = (intakeData) => {
-    // if (this.state.editMode === 'edit') {
-    //   // this is an update
-    //   updateMember(memberData).then((data) => {
-    //     this.setState({ selectedMember: { ...this.state.selectedMember, ...memberData } });
-    //   });
-    // } else {
-      // create a new member
-      createIntake(intakeData).then((data) => {
-        this.setState({ householdIntakes: [...this.state.householdIntakes, data] });
-      });
-    // }
-
+    intakeData.householdId = this.state.householdData.id;
+    intakeData.memberId = this.state.selectedMember.id;
+    
+    createIntake(intakeData).then((data) => {
+      this.setState({ householdIntakes: [...this.state.householdIntakes, data] });
+    });
     this.setState({ editIntakeModalshow: false });
   }
+
+  /**
+   * Called by child edit component when requesting to create or update a member.
+   */
+  saveHouseholdMember = (memberData) => {
+    // create a new household member
+    memberData.householdId = this.state.householdData.id;
+    createMember(memberData).then((data) => {
+      this.setState({ householdMembers: [...this.state.householdMembers, data] });
+    });
+  };
 
   render = (props) => {
     return (
@@ -217,7 +231,10 @@ export class DashboardPage extends React.Component {
           hideModal={ this.hideEditModal }
           mode={ this.state.mode }
           memberData={ this.state.selectedMember }
+          householdMembers={ this.state.householdMembers }
+          householdData={ this.state.householdData }
           save={ this.saveMemberData }
+          saveHouseholdMember={ this.saveHouseholdMember }
         />
       </Modal>
 
@@ -229,7 +246,6 @@ export class DashboardPage extends React.Component {
         <EditIntake 
           hideModal={ this.hideEditIntakeModal }
           mode={ this.state.mode }
-          memberData={ this.state.selectedMember }
           save={ this.saveIntakeData }
         />
       </Modal>

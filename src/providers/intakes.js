@@ -28,8 +28,8 @@ export const getHouseholdIntakes = (id) => {
                 weight: data.Weight,
                 householdCount: data.HouseholdCount,
                 active: data.Active,
-                created: data.Created ? moment(data.Created) : null,
-                changed: data.Changed ? moment (data.Changed) : null
+                created: data.Created ? moment(data.Created) : moment(0),
+                changed: data.Changed ? moment (data.Changed) : moment(0)
             }
         });
         return intakes;
@@ -71,8 +71,8 @@ export const createIntake = (intakeData) => {
             notes: data.Notes,
             weight: data.Weight,
             active: data.Active,
-            created: data.Created ? moment(data.Created) : null,
-            changed: data.Changed ? moment (data.Changed) : null
+            created: data.Created ? moment(data.Created) : moment(0),
+            changed: data.Changed ? moment (data.Changed) : moment(0)
         };
         return intakeResponseData;
     }).catch((error) => {

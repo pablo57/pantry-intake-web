@@ -25,8 +25,8 @@ export const searchMembers = (val, byField) => {
                 isAdult: data.IsAdult,
                 isHeadOfHousehold: data.IsHeadOfHousehold,
                 active: data.Active,
-                created: data.Created ? moment(data.Created) : null,
-                changed: data.Changed ? moment (data.Changed) : null
+                created: data.Created ? moment(data.Created) : moment(0),
+                changed: data.Changed ? moment (data.Changed) : moment(0)
             }
         });
         return members;
@@ -62,8 +62,8 @@ export const createMember = (memberData) => {
             isAdult: data.IsAdult,
             isHeadOfHousehold: data.IsHeadOfHousehold,
             active: data.Active,
-            created: data.Created ? moment(data.Created) : null,
-            changed: data.Changed ? moment(data.Changed) : null
+            created: data.Created ? moment(data.Created) : moment(0),
+            changed: data.Changed ? moment (data.Changed) : moment(0)
         }
         return memberData;
     }).catch((error) => {
@@ -95,8 +95,8 @@ export const updateMember = (memberData) => {
             isAdult: data.IsAdult,
             isHeadOfHousehold: data.IsHeadOfHousehold,
             active: data.Active,
-            created: data.Created ? moment(data.Created) : null,
-            changed: data.Changed ? moment(data.Changed) : null
+            created: data.Created ? moment(data.Created) : moment(0),
+            changed: data.Changed ? moment (data.Changed) : moment(0)
         }
         return memberData;
     }).catch((error) => {

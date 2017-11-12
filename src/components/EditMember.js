@@ -11,8 +11,6 @@ import {
 import moment from 'moment';
 import Datetime from 'react-datetime';
 import { createMember } from '../providers/members';
-import { getHouseholdMembers } from '../providers/households';
-import { getHouseholdIntakes } from '../providers/intakes';
 import AddHouseholdMember, { AddHouseHoldMember } from './AddHouseholdMember';
 
 export class EditMember extends React.Component {
@@ -37,24 +35,9 @@ export class EditMember extends React.Component {
     }
 
     this.state = {
-      // memberNumber: '',
-      // memberLastName: '',
-      // memberDOB: moment(),
-      householdData: undefined,
-      householdMembers: [],
       memberData
     };
   }
-
-  componentDidMount() {
-    console.log('componentDidMount');
-    if (this.state.memberData.id) {
-      getHouseholdMembers(this.state.memberData.householdId).then((data) => {
-        this.setState({ householdMembers: data.members, householdData: data });
-      })
-    }
-  }
-
 
   handleMemberFirstNameChange = (e) => {
     const val = e.target.value;
@@ -102,22 +85,10 @@ export class EditMember extends React.Component {
   }
 
   /**
-   * Called by child edit component when requesting to create or update a member.
+   * Called by child edit component when requesting to creat a new member for the household.
    */
   saveHouseholdMemberData = (memberData) => {
-    if (this.state.editMode === 'edit') {
-      // this is an update
-      updateMember(memberData).then((data) => {
-        // this.setState({ selectedMember: { ...this.state.selectedMember, ...memberData } });
-      });
-    } else {
-      // create a new household member
-      memberData.householdId = this.state.memberData.householdId;
-      createMember(memberData).then((data) => {
-        this.setState({ householdMembers: [...this.state.householdMembers, data] });
-      })
-    }
-
+    this.props.saveHouseholdMember(memberData);
     this.setState({ addMemberModalshow: false });
   }
 
@@ -159,7 +130,7 @@ export class EditMember extends React.Component {
       <h4>HouseHold</h4>
       <Button onClick={this.showAddMemberModal}>Add Household Member</Button>
       {
-        this.state.householdMembers && this.state.householdMembers.length === 0 ? (<p>No other members</p>) : (
+        this.props.householdMembers && this.props.householdMembers.length === 0 ? (<p>No other members</p>) : (
           
             <Table striped bordered condensed hover>
             <thead>
@@ -172,7 +143,7 @@ export class EditMember extends React.Component {
             </thead>
             <tbody>
             {
-              this.state.householdMembers && this.state.householdMembers.map((data) => (
+              this.props.householdMembers && this.props.householdMembers.map((data) => (
                 <tr key={data.id}>
                 <td>{data.id}</td>
                 <td>{data.firstName}</td>

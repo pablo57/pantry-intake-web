@@ -8,10 +8,6 @@ import {
   ButtonToolbar,
   Table,
   Modal } from 'react-bootstrap';
-import { createMember } from '../providers/members';
-import { getHouseholdMembers } from '../providers/households';
-import { getHouseholdIntakes } from '../providers/intakes';
-import AddHouseholdMember, { AddHouseHoldMember } from './AddHouseholdMember';
 
 export class EditIntake extends React.Component {
   constructor(props) {
@@ -24,8 +20,6 @@ export class EditIntake extends React.Component {
     } else {
       intakeData = {
         id: undefined,
-        householdId: this.props.memberData.householdId,
-        memberId: this.props.memberData.id,
         foodBox: false,
         perishable: false,
         camper: false,
@@ -40,21 +34,9 @@ export class EditIntake extends React.Component {
     }
 
     this.state = {
-      householdData: undefined,
-      householdMembers: [],
       intakeData
     };
   }
-
-  componentDidMount() {
-    console.log('componentDidMount');
-    if (this.state.intakeData.id) {
-      getHouseholdMembers(this.state.intakeData.householdId).then((data) => {
-        this.setState({ householdMembers: data.members, householdData: data });
-      })
-    }
-  }
-
 
   handleFoodBoxChange = (e) => {
     const val = e.target.checked;
@@ -98,35 +80,8 @@ export class EditIntake extends React.Component {
     this.setState({ intakeData });
   }
 
-  showAddMemberModal = () => {
-    this.setState({ addMemberModalshow: true });
-  }
-  hideAddMemberModal = () => {
-    this.setState({ addMemberModalshow: false });
-  }
-
   save = () => {
     this.props.save(this.state.intakeData);
-  }
-
-  /**
-   * Called by child edit component when requesting to create or update a member.
-   */
-  saveHouseholdIntakeData = (intakeData) => {
-    if (this.state.editMode === 'edit') {
-      // this is an update
-      updateMember(intakeData).then((data) => {
-        // this.setState({ selectedMember: { ...this.state.selectedMember, ...intakeData } });
-      });
-    } else {
-      // create a new household member
-      intakeData.householdId = this.state.intakeData.householdId;
-      createMember(intakeData).then((data) => {
-        this.setState({ householdMembers: [...this.state.householdMembers, data] });
-      })
-    }
-
-    this.setState({ addMemberModalshow: false });
   }
 
   render = (props) => {
@@ -188,19 +143,6 @@ export class EditIntake extends React.Component {
       <Button onClick={this.props.hideModal}>Cancel</Button>
       <Button onClick={this.save}>Save</Button>
     </Modal.Footer>
-
-    <Modal
-      show={this.state.addMemberModalshow}
-      onHide={this.hideAddMemberModal}
-      dialogClassName="custom-modal"
-    >
-    <AddHouseHoldMember 
-      hideModal={ this.hideAddMemberModal }
-      mode={ 'add' }
-      intakeData={ undefined }
-      save={ this.saveHouseholdintakeData }
-    />
-    </Modal>
 
       </div>
     );
