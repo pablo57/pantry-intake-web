@@ -184,84 +184,88 @@ export class DashboardPage extends React.Component {
           ) : (<h3>No Member Selected. Please search for and select a member to start.</h3>)
         }
         <hr/>
-        <h3>HouseHold</h3>
-        { this.state.householdMembers.length > 0 && <Button bsStyle="primary" onClick={this.showAddMemberModal}>Add Household Member</Button> }
-        {
-          this.state.householdMembers.length === 0 ? (<p>No other members</p>) : (
-            
-              <Table striped bordered condensed hover>
-              <thead>
-                <tr>
-                  <th>Member#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>DOB</th>
-                </tr>
-              </thead>
-              <tbody>
-              {
-                this.state.householdMembers && this.state.householdMembers.map((data) => (
-                  <tr key={data.id}>
-                  <td>{data.id}</td>
-                  <td>{data.firstName}</td>
-                  <td>{data.lastName}</td>
-                  <td>{data.DOB.format('MM/DD/YYYY')}</td>
-                </tr>
-                ))
-              }
-              </tbody>
-            </Table>
-          )
-        }
-        <hr/>
-        {
-          this.state.householdIntakes && this.state.householdIntakes.length > 0 ?  (
-              <div>
-                <h3>Intake History</h3>
-                <Table striped bordered condensed hover>
-                <thead>
+        { this.state.selectedMember && (
+          <div>
+            <h3>HouseHold</h3>
+            <Button bsStyle="primary" onClick={this.showAddMemberModal}>Add Household Member</Button>
+            {
+              this.state.householdMembers.length > 1 ? (
+                
+                  <Table striped bordered condensed hover>
+                  <thead>
                     <tr>
-                      <th>FoodBox</th>
-                      <th>Perishables</th>
-                      <th>Camper</th>
-                      <th>Diapers</th>
-                      <th>Notes</th>
-                      <th>Household Count</th>
-                      <th>Weight</th>
-                      <th>Date</th>
+                      <th>Member#</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>DOB</th>
                     </tr>
                   </thead>
                   <tbody>
                   {
-                    this.state.householdIntakes && this.state.householdIntakes.map((data) => (
-                          <tr key={data.id}>
-                          <td><input type="checkbox" checked={data.foodBox} readOnly disabled /></td>
-                          <td><input type="checkbox" checked={data.perishable} readOnly disabled /></td>
-                          <td><input type="checkbox" checked={data.camper} readOnly disabled /></td>
-                          <td><input type="checkbox" checked={data.diaper} readOnly disabled /></td>
-                          <td>{data.notes}</td>
-                          <td>{data.householdCount}</td>
-                          <td>{data.weight}</td>
-                          <td>{data.created.format('MM/DD/YYYY')}</td>
-                        </tr>
-                        ))
+                    this.state.householdMembers && this.state.householdMembers.filter((data) => data.id !== this.state.selectedMember.id).map((data) => (
+                      <tr key={data.id}>
+                      <td>{data.id}</td>
+                      <td>{data.firstName}</td>
+                      <td>{data.lastName}</td>
+                      <td>{data.DOB.format('MM/DD/YYYY')}</td>
+                    </tr>
+                    ))
                   }
                   </tbody>
                 </Table>
-              </div>
-          ) : (<h3>No Intake History</h3>)
-        }
+              ) : (<p>No other members</p>)
+            }
+          </div>
+        )}
+        <hr/>
+        {
+          this.state.selectedMember && (
+          <div>
+            <h3>Intake History</h3>
+            <Button bsStyle="primary" onClick={() => this.showEditIntakeModal('edit')}>
+              Create Intake
+            </Button>
+
+            {
+              this.state.householdIntakes.length > 0 ?  (
+                  <div>
+                    <Table striped bordered condensed hover>
+                    <thead>
+                        <tr>
+                          <th>FoodBox</th>
+                          <th>Perishables</th>
+                          <th>Camper</th>
+                          <th>Diapers</th>
+                          <th>Notes</th>
+                          <th>Household Count</th>
+                          <th>Weight</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {
+                        this.state.householdIntakes && this.state.householdIntakes.map((data) => (
+                              <tr key={data.id}>
+                              <td><input type="checkbox" checked={data.foodBox} readOnly disabled /></td>
+                              <td><input type="checkbox" checked={data.perishable} readOnly disabled /></td>
+                              <td><input type="checkbox" checked={data.camper} readOnly disabled /></td>
+                              <td><input type="checkbox" checked={data.diaper} readOnly disabled /></td>
+                              <td>{data.notes}</td>
+                              <td>{data.householdCount}</td>
+                              <td>{data.weight}</td>
+                              <td>{data.created.format('MM/DD/YYYY')}</td>
+                            </tr>
+                            ))
+                      }
+                      </tbody>
+                    </Table>
+                  </div>
+              ) : (<h4>No Intake History</h4>)
+            }
+          </div>
+        )}
 
         <ButtonToolbar>
-          {
-            this.state.selectedMember && (
-            <div>
-              <Button bsStyle="primary" onClick={() => this.showEditIntakeModal('edit')}>
-                Create Intake
-              </Button>
-            </div>
-          )}
-        
 
         <Modal
           show={this.state.searchModalshow}
