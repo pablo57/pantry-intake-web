@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   Button,
   FormGroup,
   Form,
@@ -84,65 +84,68 @@ export class EditIntake extends React.Component {
     this.props.save(this.state.intakeData);
   }
 
-  render = (props) => {
+  render = () => {
     return (
       <div>
 
-      <Modal.Header closeButton>
-      <Modal.Title id="contained-modal-title-lg">{this.props.mode === 'edit' ? 'Edit' : 'Add'} Intake</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-    <form>
-    <FormGroup
-      controlId="formBasicText"
-    >
-      <ControlLabel>Food Box</ControlLabel>
-      <FormControl
-        type="checkbox"
-        value={this.state.intakeData.foodBox}
-        onChange={this.handleFoodBoxChange}
-      />
-      <ControlLabel>Perishable</ControlLabel>
-      <FormControl
-        type="checkbox"
-        value={this.state.intakeData.perishable}
-        onChange={this.handlePerishableChange}
-      />
-      <ControlLabel>Camper</ControlLabel>
-      <FormControl
-      type="checkbox"
-      value={this.state.intakeData.camper}
-      onChange={this.handleCamperChange}
-      />
-      <ControlLabel>Diapers</ControlLabel>
-      <FormControl
-      type="checkbox"
-      value={this.state.intakeData.diaper}
-      onChange={this.handleDiaperChange}
-      />
-      <ControlLabel>Notes</ControlLabel>
-      <FormControl
-      type="text"
-      value={this.state.intakeData.notes}
-      placeholder="Enter Intake Notes"
-      onChange={this.handleNotesChange}
-      />
-      <ControlLabel>Weight</ControlLabel>
-      <FormControl
-      type="text"
-      value={this.state.intakeData.weight}
-      placeholder="Enter Intake Weight"
-      onChange={this.handleWeightChange}
-      />
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-lg">{this.props.mode === 'edit' ? 'Edit' : 'Add'} Intake</Modal.Title>
+        </Modal.Header>
 
-    </FormGroup>
-  </form>
-      
-    </Modal.Body>
-    <Modal.Footer>
-      <Button onClick={this.props.hideModal}>Cancel</Button>
-      <Button onClick={this.save}>Save</Button>
-    </Modal.Footer>
+        <Modal.Body>
+          <form>
+            <FormGroup controlId="formBasicText">
+              <ControlLabel>Food Box</ControlLabel>
+              <FormControl
+                type="checkbox"
+                value={this.state.intakeData.foodBox}
+                onChange={this.handleFoodBoxChange}
+              />
+
+              <ControlLabel>Perishable</ControlLabel>
+              <FormControl
+                type="checkbox"
+                value={this.state.intakeData.perishable}
+                onChange={this.handlePerishableChange}
+              />
+
+              <ControlLabel>Camper</ControlLabel>
+              <FormControl
+                type="checkbox"
+                value={this.state.intakeData.camper}
+                onChange={this.handleCamperChange}
+              />
+
+              <ControlLabel>Diapers</ControlLabel>
+              <FormControl
+                type="checkbox"
+                value={this.state.intakeData.diaper}
+                onChange={this.handleDiaperChange}
+              />
+
+              <ControlLabel>Notes</ControlLabel>
+              <FormControl
+                type="text"
+                value={this.state.intakeData.notes}
+                placeholder="Enter Intake Notes"
+                onChange={this.handleNotesChange}
+              />
+
+              <ControlLabel>Weight</ControlLabel>
+              <FormControl
+                type="text"
+                value={this.state.intakeData.weight}
+                placeholder="Enter Intake Weight"
+                onChange={this.handleWeightChange}
+              />
+            </FormGroup>
+          </form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button onClick={this.props.hideModal}>Cancel</Button>
+          <Button onClick={this.save}>Save</Button>
+        </Modal.Footer>
 
       </div>
     );

@@ -2,19 +2,19 @@
 
 // ADD_MEMBER
 export const addMember = member => ({
-    type: 'ADD_MEMBER',
-    member
+  type: 'ADD_MEMBER',
+  member
 });
 
 // REMOVE_MEMBER
 export const removeMember = ({ id } = {}) => ({
-    type: 'REMOVE_MEMBER',
-    id
+  type: 'REMOVE_MEMBER',
+  id
 });
 
 // EDIT_MEMBER
 export const editMember = (id, updates) => ({
-    type: 'EDIT_MEMBER',
-    id,
-    updates
+  type: 'EDIT_MEMBER',
+  id,
+  updates
 });

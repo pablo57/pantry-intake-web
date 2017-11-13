@@ -16,10 +16,10 @@ export default (members, { lastNameText, firstNameText, DOBfilter, sortBy }) => 
     return DOBMatch && lastNameMatch && firstNameMatch;
   }).sort((a, b) => {
     if (sortBy === 'dob') {
-    //  // TODO: MUST IMPLEMENT
+      // TODO: MUST IMPLEMENT
     } else if (sortBy === 'lastName') {
-        // TODO: MUST IMPLEMENT
-        return true;
+      // TODO: MUST IMPLEMENT
+      return true;
     } else if (sortBy === 'id') {
         return a.id < b.id ? 1 : -1;
       }
