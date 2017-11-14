@@ -42,7 +42,10 @@ export class EditIntake extends React.Component {
   }
 
   componentDidMount() {
-    this.sigPad.fromDataURL(this.state.intakeData.signature);
+    if (this.state.intakeData.signature) {
+      this.sigPad.fromDataURL(this.state.intakeData.signature);
+      this.setState({ sigPadIsEmpty: this.sigPad.isEmpty() });
+    }
   }
 
   clear = (e) => {
