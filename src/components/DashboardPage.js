@@ -109,6 +109,7 @@ export class DashboardPage extends React.Component {
   saveIntakeData = (intakeData) => {
     intakeData.householdId = this.state.householdData.id;
     intakeData.memberId = this.state.selectedMember.id;
+    intakeData.householdCount = this.state.householdMembers.length;
 
     createIntake(intakeData).then((data) => {
       this.setState({ householdIntakes: [...this.state.householdIntakes, data] });
@@ -234,21 +235,39 @@ export class DashboardPage extends React.Component {
                         <th>Notes</th>
                         <th>Household Count</th>
                         <th>Weight</th>
+                        <th>Member</th>
+                        <th>Signature</th>
                         <th>Date</th>
                       </tr>
                     </thead>
                       <tbody>
                       {
-                        this.state.householdIntakes && this.state.householdIntakes.map((data) => (
-                          <tr key={data.id}>
-                            <td><input type="checkbox" checked={data.foodBox} readOnly disabled /></td>
-                            <td><input type="checkbox" checked={data.perishable} readOnly disabled /></td>
-                            <td><input type="checkbox" checked={data.camper} readOnly disabled /></td>
-                            <td><input type="checkbox" checked={data.diaper} readOnly disabled /></td>
-                            <td>{data.notes}</td>
-                            <td>{data.householdCount}</td>
-                            <td>{data.weight}</td>
-                            <td>{data.created.format('MM/DD/YYYY')}</td>
+                        this.state.householdIntakes && this.state.householdIntakes.map((intake) => (
+                          <tr key={intake.id}>
+                            <td><input type="checkbox" checked={intake.foodBox} readOnly disabled /></td>
+                            <td><input type="checkbox" checked={intake.perishable} readOnly disabled /></td>
+                            <td><input type="checkbox" checked={intake.camper} readOnly disabled /></td>
+                            <td><input type="checkbox" checked={intake.diaper} readOnly disabled /></td>
+                            <td>{intake.notes}</td>
+                            <td>{intake.householdCount}</td>
+                            <td>{intake.weight}</td>
+                            <td>
+                            {
+                              this.state.householdMembers.map((member) => {
+                                if (member.id === intake.memberId) {
+                                  return (<p key={member.id}>{`${member.firstName} ${member.lastName}`}</p>)
+                                }
+                              })
+                            }
+                            </td>
+                            <td>
+                              {
+                                intake.signature
+                                ? <img className='sigImage' src={intake.signature} />
+                                : <p>No signature</p>
+                              }
+                            </td>
+                            <td>{intake.created.format('MM/DD/YYYY')}</td>
                           </tr>
                         ))
                       }

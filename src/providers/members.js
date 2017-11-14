@@ -39,6 +39,8 @@ export const createMember = (memberData) => {
     FirstName: memberData.firstName,
     LastName: memberData.lastName,
     DOB: memberData.DOB.format('YYYY-MM-DD'),
+    IsAdult: memberData.isAdult,
+    IsHeadOfHousehold: memberData.isHeadOfHousehold
   }
 
   if (memberData.householdId) {
@@ -80,6 +82,8 @@ export const updateMember = (memberData) => {
       FirstName: memberData.firstName,
       LastName: memberData.lastName,
       DOB: memberData.DOB.format('YYYY-MM-DD'),
+      IsAdult: memberData.isAdult,
+      IsHeadOfHousehold: memberData.isHeadOfHousehold
     }
   })
   .then((response) => {

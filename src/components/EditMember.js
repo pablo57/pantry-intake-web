@@ -51,19 +51,28 @@ export class EditMember extends React.Component {
     this.setState({ memberData });
   }
 
-  handleMemberDOBChange = (e) => {
-    const val = e.target.value;
-    let memberData = this.state.memberData;
-    memberData.DOB = val;
-    this.setState({ memberData });
-  }
-
   onDateChange = (date) => {
     if (date) {
       let memberData = this.state.memberData;
       memberData.DOB = date;
+
+      // Use the selected date to determine whether the user is 18 years or older.
+      let years = moment().diff(date, 'years');
+      if (years >= 18) {
+        memberData.isAdult = true;
+      } else {
+        memberData.isAdult = false;
+      }
+
       this.setState(() => ({ memberData }));
     }
+  };
+
+  handleMemberIsHeadOfHouseholdChange = (e) => {
+    const val = e.target.checked;
+    let memberData = this.state.memberData;
+    memberData.isHeadOfHousehold = val;
+    this.setState({ memberData });
   };
 
   onFocusedChange = ({ focused }) => {
@@ -107,6 +116,23 @@ export class EditMember extends React.Component {
                 value={this.state.memberData.DOB}
                 timeFormat={false}
                 onChange={this.onDateChange}
+              />
+
+              <ControlLabel>Adult</ControlLabel>
+              <FormControl
+                type="checkbox"
+                checked={this.state.memberData.isAdult}
+                placeholder="Enter Member Last Name"
+                readOnly
+                disabled
+              />
+
+              <ControlLabel>Head Of Household</ControlLabel>
+              <FormControl
+                type="checkbox"
+                value={this.state.memberData.isHeadOfHousehold}
+                placeholder="Enter Member Last Name"
+                onChange={this.handleMemberIsHeadOfHouseholdChange}
               />
             </FormGroup>
           </form>

@@ -52,10 +52,28 @@ export class AddHouseHoldMember extends React.Component {
   }
 
   handleMemberDOBChange = (date) => {
+    if (date) {
+      let memberData = this.state.memberData;
+      memberData.DOB = date;
+
+      // Use the selected date to determine whether the user is 18 years or older.
+      let years = moment().diff(date, 'years');
+      if (years >= 18) {
+        memberData.isAdult = true;
+      } else {
+        memberData.isAdult = false;
+      }
+
+      this.setState(() => ({ memberData }));
+    }
+  };
+
+  handleMemberIsHeadOfHouseholdChange = (e) => {
+    const val = e.target.checked;
     let memberData = this.state.memberData;
-    memberData.DOB = date;
+    memberData.isHeadOfHousehold = val;
     this.setState({ memberData });
-  }
+  };
 
   save = () => {
     this.props.save(this.state.memberData);
@@ -96,6 +114,23 @@ export class AddHouseHoldMember extends React.Component {
                 value={this.state.memberData.DOB}
                 timeFormat={false}
                 onChange={this.handleMemberDOBChange}
+              />
+
+              <ControlLabel>Adult</ControlLabel>
+              <FormControl
+                type="checkbox"
+                checked={this.state.memberData.isAdult}
+                placeholder="Enter Member Last Name"
+                readOnly
+                disabled
+              />
+
+              <ControlLabel>Head Of Household</ControlLabel>
+              <FormControl
+                type="checkbox"
+                value={this.state.memberData.isHeadOfHousehold}
+                placeholder="Enter Member Last Name"
+                onChange={this.handleMemberIsHeadOfHouseholdChange}
               />
             </FormGroup>
           </form>

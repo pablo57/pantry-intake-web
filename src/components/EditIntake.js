@@ -7,7 +7,9 @@ import {
   FormControl,
   ButtonToolbar,
   Table,
-  Modal } from 'react-bootstrap';
+  Modal,
+  Well } from 'react-bootstrap';
+import SignatureCanvas from 'react-signature-canvas'
 
 export class EditIntake extends React.Component {
   constructor(props) {
@@ -33,9 +35,30 @@ export class EditIntake extends React.Component {
       }
     }
 
+    this.sigPad = {}
     this.state = {
-      intakeData
+      intakeData,
+      trimmedDataURL: null,
+      sigPadIsEmpty: true
     };
+  }
+
+  clear = (e) => {
+    e.preventDefault();
+    this.sigPad.clear();
+    this.setState({ sigPadIsEmpty: this.sigPad.isEmpty() });
+  }
+  trim = (e) => {
+    e.preventDefault();
+    this.setState(
+    {
+      trimmedDataURL: this.sigPad
+        .getTrimmedCanvas()
+        .toDataURL('image/png')
+    })
+  }
+  sigPadOnEndOfStroke = () => {
+    this.setState({ sigPadIsEmpty: this.sigPad.isEmpty() });
   }
 
   handleFoodBoxChange = (e) => {
@@ -81,7 +104,16 @@ export class EditIntake extends React.Component {
   }
 
   save = () => {
-    this.props.save(this.state.intakeData);
+    let signature = this.sigPad
+      .getTrimmedCanvas()
+      .toDataURL('image/png');
+
+    let intakeData = {
+      ...this.state.intakeData,
+      signature
+    };
+
+    this.props.save(intakeData);
   }
 
   render = () => {
@@ -138,13 +170,39 @@ export class EditIntake extends React.Component {
                 placeholder="Enter Intake Weight"
                 onChange={this.handleWeightChange}
               />
-            </FormGroup>
+
+              </FormGroup>
+              <ControlLabel>Signature</ControlLabel>
+              {
+                <Well>
+                  <div className='sigContainerContainer'>
+                    <div className='sigContainer'>
+                      <SignatureCanvas
+                        canvasProps={{width: 500, height: 200, className: 'sigPad'}}
+                        ref={(ref) => { this.sigPad = ref }}
+                        onEnd={this.sigPadOnEndOfStroke}
+                      />
+                    </div>
+                    <div>
+                      <button className="sigButtons" onClick={this.clear}>
+                        Clear
+                      </button>
+                      <button className="sigButtons" onClick={this.trim}>
+                        Trim
+                      </button>
+                    </div>
+                    { this.state.trimmedDataURL && <img className='sigImage' src={this.state.trimmedDataURL} /> }
+                  </div>
+                </Well>
+              }
+
           </form>
         </Modal.Body>
 
         <Modal.Footer>
           <Button onClick={this.props.hideModal}>Cancel</Button>
-          <Button onClick={this.save}>Save</Button>
+          {this.sigPad && <Button onClick={this.save} disabled={this.state.sigPadIsEmpty}>Save</Button>}
+
         </Modal.Footer>
 
       </div>

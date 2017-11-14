@@ -46,7 +46,9 @@ export const createIntake = (intakeData) => {
     Perishable: intakeData.perishable,
     Camper: intakeData.camper,
     Diaper: intakeData.diaper,
+    Signature: intakeData.signature,
     Notes: intakeData.notes,
+    HouseholdCount: intakeData.householdCount,
     Weight: intakeData.weight,
     Active: intakeData.active
   }
@@ -69,6 +71,7 @@ export const createIntake = (intakeData) => {
       diaper: data.Diaper,
       signature: data.Signature,
       notes: data.Notes,
+      householdCount: data.HouseholdCount,
       weight: data.Weight,
       active: data.Active,
       created: data.Created ? moment(data.Created) : moment(0),
