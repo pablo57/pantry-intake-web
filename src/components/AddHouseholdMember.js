@@ -128,7 +128,7 @@ export class AddHouseHoldMember extends React.Component {
               <ControlLabel>Head Of Household</ControlLabel>
               <FormControl
                 type="checkbox"
-                value={this.state.memberData.isHeadOfHousehold}
+                checked={this.state.memberData.isHeadOfHousehold}
                 placeholder="Enter Member Last Name"
                 onChange={this.handleMemberIsHeadOfHouseholdChange}
               />
