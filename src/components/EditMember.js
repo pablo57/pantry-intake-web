@@ -88,7 +88,7 @@ export class EditMember extends React.Component {
       <div>
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{this.props.mode === 'edit' ? 'Edit' : 'Add'} Member</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{this.props.mode === 'edit' ? 'Edit' : 'Create'} Member</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>

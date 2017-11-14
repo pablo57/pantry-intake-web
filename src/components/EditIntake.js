@@ -14,7 +14,6 @@ import SignatureCanvas from 'react-signature-canvas'
 export class EditIntake extends React.Component {
   constructor(props) {
     super(props);
-
     // check if intakeData was passed in (in the case of an edit)
     let intakeData;
     if (this.props.intakeData) {
@@ -38,24 +37,18 @@ export class EditIntake extends React.Component {
     this.sigPad = {}
     this.state = {
       intakeData,
-      trimmedDataURL: null,
       sigPadIsEmpty: true
     };
+  }
+
+  componentDidMount() {
+    this.sigPad.fromDataURL(this.state.intakeData.signature);
   }
 
   clear = (e) => {
     e.preventDefault();
     this.sigPad.clear();
     this.setState({ sigPadIsEmpty: this.sigPad.isEmpty() });
-  }
-  trim = (e) => {
-    e.preventDefault();
-    this.setState(
-    {
-      trimmedDataURL: this.sigPad
-        .getTrimmedCanvas()
-        .toDataURL('image/png')
-    })
   }
   sigPadOnEndOfStroke = () => {
     this.setState({ sigPadIsEmpty: this.sigPad.isEmpty() });
@@ -121,7 +114,7 @@ export class EditIntake extends React.Component {
       <div>
 
         <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-lg">{this.props.mode === 'edit' ? 'Edit' : 'Add'} Intake</Modal.Title>
+          <Modal.Title id="contained-modal-title-lg">{this.props.mode === 'edit' ? 'Edit' : 'Create'} Intake</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -130,6 +123,7 @@ export class EditIntake extends React.Component {
               <ControlLabel>Food Box</ControlLabel>
               <FormControl
                 type="checkbox"
+                checked={this.state.intakeData.foodBox}
                 value={this.state.intakeData.foodBox}
                 onChange={this.handleFoodBoxChange}
               />
@@ -137,21 +131,21 @@ export class EditIntake extends React.Component {
               <ControlLabel>Perishable</ControlLabel>
               <FormControl
                 type="checkbox"
-                value={this.state.intakeData.perishable}
+                checked={this.state.intakeData.perishable}
                 onChange={this.handlePerishableChange}
               />
 
               <ControlLabel>Camper</ControlLabel>
               <FormControl
                 type="checkbox"
-                value={this.state.intakeData.camper}
+                checked={this.state.intakeData.camper}
                 onChange={this.handleCamperChange}
               />
 
               <ControlLabel>Diapers</ControlLabel>
               <FormControl
                 type="checkbox"
-                value={this.state.intakeData.diaper}
+                checked={this.state.intakeData.diaper}
                 onChange={this.handleDiaperChange}
               />
 
@@ -187,11 +181,8 @@ export class EditIntake extends React.Component {
                       <button className="sigButtons" onClick={this.clear}>
                         Clear
                       </button>
-                      <button className="sigButtons" onClick={this.trim}>
-                        Trim
-                      </button>
                     </div>
-                    { this.state.trimmedDataURL && <img className='sigImage' src={this.state.trimmedDataURL} /> }
+                    { this.state.signature && <img className='sigImage' src={this.state.signature} /> }
                   </div>
                 </Well>
               }

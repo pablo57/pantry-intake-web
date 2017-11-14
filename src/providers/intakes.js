@@ -82,3 +82,48 @@ export const createIntake = (intakeData) => {
     console.log('error posting member data.', error);
   });
 };
+
+export const updateIntake = (intakeData) => {
+  return axios({
+    method:'patch',
+    url:`http://localhost:8081/v1/intakes`,
+    data:
+    {
+      Id: intakeData.id,
+      HouseholdId: intakeData.householdId,
+      MemberId: intakeData.memberId,
+      FoodBox: intakeData.foodBox,
+      Perishable: intakeData.perishable,
+      Camper: intakeData.camper,
+      Diaper: intakeData.diaper,
+      Signature: intakeData.signature,
+      Notes: intakeData.notes,
+      HouseholdCount: intakeData.householdCount,
+      Weight: intakeData.weight,
+      Active: intakeData.active
+    }
+  })
+  .then((response) => {
+    let data = response.data.data;
+    // serialize the data
+    const intakeResponseData = {
+      id: data.Id,
+      householdId: data.HouseholdId,
+      memberId: data.MemberId,
+      foodBox: data.FoodBox,
+      perishable: data.Perishable,
+      camper: data.Camper,
+      diaper: data.Diaper,
+      signature: data.Signature,
+      notes: data.Notes,
+      householdCount: data.HouseholdCount,
+      weight: data.Weight,
+      active: data.Active,
+      created: data.Created ? moment(data.Created) : moment(0),
+      changed: data.Changed ? moment (data.Changed) : moment(0)
+    };
+    return intakeResponseData;
+  }).catch((error) => {
+    console.log('error posting member data.', error);
+  });
+};
